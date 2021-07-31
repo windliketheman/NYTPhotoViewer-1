@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<NYTPhoto>)objectAtIndexedSubscript:(NSUInteger)idx;
 
+- (BOOL)removePhoto:(id <NYTPhoto>)photo;
+
 @end
 
 NS_ASSUME_NONNULL_END

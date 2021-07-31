@@ -9,6 +9,7 @@
 @import UIKit;
 
 @class NYTPhotosOverlayView;
+@class NYTPhotoViewController;
 
 @protocol NYTPhoto;
 @protocol NYTPhotosViewControllerDelegate;
@@ -62,6 +63,11 @@ extern NSString * const NYTPhotosViewControllerDidDismissNotification;
  *  After setting a new data source, you must call `-reloadPhotosAnimated:`.
  */
 @property (nonatomic, weak, nullable) id <NYTPhotoViewerDataSource> dataSource;
+
+/**
+ *  The NYTPhotoViewController contains the photo.
+*/
+@property (nonatomic, readonly) NYTPhotoViewController *currentPhotoViewController;
 
 /**
  *  The object conforming to `NYTPhoto` that is currently being displayed by the `pageViewController`.
@@ -167,6 +173,11 @@ extern NSString * const NYTPhotosViewControllerDidDismissNotification;
  *  @param animated Whether any resulting transitions should be animated.
  */
 - (void)reloadPhotosAnimated:(BOOL)animated;
+
+/**
+ *  Exit
+ */
+- (void)doneButtonTapped:(id _Nullable)sender;
 
 @end
 

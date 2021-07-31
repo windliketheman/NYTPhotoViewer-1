@@ -8,6 +8,8 @@
 
 @import UIKit;
 
+extern CGFloat kFLAnimatedImageViewPreferredZoomScale;
+
 #ifdef ANIMATED_GIF_SUPPORT
 @class PINAnimatedImageView;
 #endif
@@ -63,6 +65,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Centers the image inside of the scroll view. Typically used after rotation, or when zooming has finished.
  */
 - (void)centerScrollViewContents;
+
+// 垂直长图
+- (BOOL)isVerticalLongImage;
 
 @end
 
