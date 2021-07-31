@@ -60,6 +60,9 @@ static const UIEdgeInsets NYTPhotosViewControllerCloseButtonImageInsets = {3, 0,
 
 @property (nonatomic, nullable) id<NYTPhoto> initialPhoto;
 
+// custom
+@property (nonatomic, readwrite) BOOL statusBarShouldHidden;
+
 @end
 
 @implementation NYTPhotosViewController
@@ -155,7 +158,20 @@ static const UIEdgeInsets NYTPhotosViewControllerCloseButtonImageInsets = {3, 0,
 }
 
 - (BOOL)prefersStatusBarHidden {
-    return YES;
+    BOOL isLandscape = ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft || [[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight);
+    if (self.prefersStatusBarAlwaysHidden || isLandscape) {
+        return YES;
+    } else {
+        return self.statusBarShouldHidden;
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
+- (BOOL)prefersStatusBarAlwaysHidden {
+    return super.prefersStatusBarHidden;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
@@ -204,6 +220,8 @@ static const UIEdgeInsets NYTPhotosViewControllerCloseButtonImageInsets = {3, 0,
     self.modalPresentationStyle = UIModalPresentationFullScreen;
     self.transitioningDelegate = _transitionController;
     self.modalPresentationCapturesStatusBarAppearance = YES;
+    
+    self.statusBarShouldHidden = self.prefersStatusBarAlwaysHidden;
 
     _overlayView = ({
         NYTPhotosOverlayView *v = [[NYTPhotosOverlayView alloc] initWithFrame:CGRectZero];
@@ -245,7 +263,7 @@ static const UIEdgeInsets NYTPhotosViewControllerCloseButtonImageInsets = {3, 0,
     [self updateOverlayInformation];
     [self.view addSubview:self.overlayView];
     
-    [self setOverlayViewHidden:YES animated:NO];
+    [self setOverlayViewHidden:self.prefersStatusBarAlwaysHidden animated:NO];
 }
 
 
@@ -508,6 +526,11 @@ static const UIEdgeInsets NYTPhotosViewControllerCloseButtonImageInsets = {3, 0,
     else {
         self.overlayView.hidden = hidden;
     }
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.statusBarShouldHidden = hidden;
+        [self setNeedsStatusBarAppearanceUpdate];
+    });
 }
 
 - (NYTPhotoViewController *)newPhotoViewControllerForPhoto:(id <NYTPhoto>)photo atIndex:(NSUInteger)index {
