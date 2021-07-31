@@ -25,7 +25,8 @@
         if (photos == nil) {
             _photos = @[];
         } else {
-            _photos = [photos copy];
+            // _photos = [photos copy];
+            _photos = photos;
         }
     }
     
@@ -64,6 +65,17 @@
 
 - (id<NYTPhoto>)objectAtIndexedSubscript:(NSUInteger)idx {
     return [self photoAtIndex:idx];
+}
+
+#pragma mark - Mutable
+
+- (BOOL)removePhoto:(id <NYTPhoto>)photo {
+    if ([self.photos containsObject:photo] && [self.photos isKindOfClass:[NSMutableArray class]]) {
+        NSMutableArray *mutableArray = (NSMutableArray *)self.photos;
+        [mutableArray removeObject:photo];
+        return YES;
+    }
+    return NO;
 }
 
 @end
