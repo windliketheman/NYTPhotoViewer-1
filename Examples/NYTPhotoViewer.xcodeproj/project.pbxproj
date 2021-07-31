@@ -148,13 +148,13 @@
 			isa = PBXGroup;
 			children = (
 				CD7B24412576A56A00290A00 /* Main.storyboard */,
-				076C552E256DE02900D8CA75 /* NYTViewController.m */,
-				076C552F256DE02900D8CA75 /* NYTAppDelegate.m */,
-				076C5530256DE02900D8CA75 /* NYTExamplePhoto.h */,
-				076C5531256DE02900D8CA75 /* main.m */,
-				076C5532256DE02900D8CA75 /* NYTViewController.h */,
-				076C5533256DE02900D8CA75 /* NYTExamplePhoto.m */,
 				076C5534256DE02900D8CA75 /* NYTAppDelegate.h */,
+				076C552F256DE02900D8CA75 /* NYTAppDelegate.m */,
+				076C5532256DE02900D8CA75 /* NYTViewController.h */,
+				076C552E256DE02900D8CA75 /* NYTViewController.m */,
+				076C5530256DE02900D8CA75 /* NYTExamplePhoto.h */,
+				076C5533256DE02900D8CA75 /* NYTExamplePhoto.m */,
+				076C5531256DE02900D8CA75 /* main.m */,
 			);
 			name = ObjC;
 			path = Sources/ObjC;
@@ -331,10 +331,11 @@
 					};
 					111084691C876A2B00699670 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 6M2Z6C29XA;
 					};
 					11FBDADB1C877BD600018169 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = 6P29U2X5BH;
+						DevelopmentTeam = 6M2Z6C29XA;
 						LastSwiftMigration = 0810;
 					};
 				};
@@ -737,10 +738,11 @@
 			baseConfigurationReference = 54C29C2860B777AA3F96E298 /* Pods-Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6M2Z6C29XA;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nytimes.photoviewer.example.obj;
+				PRODUCT_BUNDLE_IDENTIFIER = com.orangeapps.photoviewer.example.obj;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -750,10 +752,11 @@
 			baseConfigurationReference = CF0E881D90E20E65A43C6398 /* Pods-Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6M2Z6C29XA;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nytimes.photoviewer.example.obj;
+				PRODUCT_BUNDLE_IDENTIFIER = com.orangeapps.photoviewer.example.obj;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -763,11 +766,11 @@
 			baseConfigurationReference = D7D5ED9071C683B8C95D634A /* Pods-Example-Swift.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6P29U2X5BH;
+				DEVELOPMENT_TEAM = 6M2Z6C29XA;
 				INFOPLIST_FILE = Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nytimes.photoviewer.example.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.orangeapps.photoviewer.example.swift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -779,11 +782,11 @@
 			baseConfigurationReference = 0EAFCA0D14C64E7A15FFE321 /* Pods-Example-Swift.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6P29U2X5BH;
+				DEVELOPMENT_TEAM = 6M2Z6C29XA;
 				INFOPLIST_FILE = Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nytimes.photoviewer.example.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.orangeapps.photoviewer.example.swift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
