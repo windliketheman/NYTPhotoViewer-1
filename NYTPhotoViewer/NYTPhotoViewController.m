@@ -169,22 +169,45 @@ NSString * const NYTPhotoViewControllerPhotoImageUpdatedNotification = @"NYTPhot
 }
 
 - (void)didDoubleTapWithGestureRecognizer:(UITapGestureRecognizer *)recognizer {
-    CGPoint pointInView = [recognizer locationInView:self.scalingImageView.imageView];
+    CGPoint touchPoint = [recognizer locationInView:self.scalingImageView.imageView];
     
-    CGFloat newZoomScale = self.scalingImageView.maximumZoomScale;
+    // 控制下面的zoomScale的大小，来放大、缩小图片
+    CGFloat minimumZoomScale = self.scalingImageView.minimumZoomScale;
+    CGFloat maximumZoomScale = self.scalingImageView.maximumZoomScale;
+    
+    // 设置默认放大比例
+    BOOL maximumZooming = YES;
+    CGFloat newZoomScale = fmin(maximumZoomScale, minimumZoomScale * 3.0);
 
-    if (self.scalingImageView.zoomScale >= self.scalingImageView.maximumZoomScale
-        || ABS(self.scalingImageView.zoomScale - self.scalingImageView.maximumZoomScale) <= 0.01) {
-        newZoomScale = self.scalingImageView.minimumZoomScale;
+    // 长图自动放大到最大，宽度充满屏幕
+    if (self.scalingImageView.isVerticalLongImage) {
+        newZoomScale = maximumZoomScale;
     }
+    
+    // 图片已经放大，则还原图片
+    if (self.scalingImageView.zoomScale > self.scalingImageView.minimumZoomScale) {
+        maximumZooming = NO;
+        newZoomScale = minimumZoomScale;
+    }
+    
+//    // 超大图二次放大
+//    if (maximumZooming) {
+//        if (fabs(self.scalingImageView.zoomScale - zoomScale) <= 0.01 && zoomScale < maximumZoomScale) {
+//            zoomScale = maximumZoomScale;
+//        }
+//    }
     
     CGSize scrollViewSize = self.scalingImageView.bounds.size;
     
     CGFloat width = scrollViewSize.width / newZoomScale;
     CGFloat height = scrollViewSize.height / newZoomScale;
-    CGFloat originX = pointInView.x - (width / 2.0);
-    CGFloat originY = pointInView.y - (height / 2.0);
+    CGFloat originX = touchPoint.x - (width / 2.0);
+    CGFloat originY = touchPoint.y - (height / 2.0);
     
+    if (self.scalingImageView.isVerticalLongImage && maximumZooming) {
+        originX = 0.0;
+        originY = 0.0;
+    }
     CGRect rectToZoomTo = CGRectMake(originX, originY, width, height);
     
     [self.scalingImageView zoomToRect:rectToZoomTo animated:YES];

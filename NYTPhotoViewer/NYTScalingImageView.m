@@ -20,6 +20,8 @@
 #endif
 #endif
 
+CGFloat kFLAnimatedImageViewPreferredZoomScale = 5.0;
+
 @interface NYTScalingImageView ()
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
@@ -29,6 +31,8 @@
 #else
 @property (nonatomic) UIImageView *imageView;
 #endif
+
+@property (nonatomic, assign) UIEdgeInsets contentInsetStored;
 @end
 
 @implementation NYTScalingImageView
@@ -159,12 +163,25 @@
         
         CGFloat scaleWidth = scrollViewFrame.size.width / imageSize.width;
         CGFloat scaleHeight = scrollViewFrame.size.height / imageSize.height;
-        CGFloat minScale = MIN(scaleWidth, scaleHeight);
+
+        CGFloat minimumScale = MIN(scaleWidth, scaleHeight);
+        CGFloat maximumScale = MAX(minimumScale, self.maximumZoomScale);
         
-        self.minimumZoomScale = minScale;
-        self.maximumZoomScale = MAX(minScale, self.maximumZoomScale);
+        if (self.isVerticalLongImage) {
+            maximumScale = MAX(minimumScale, scaleWidth);
+        }
+        
+        // 原始图片宽高大于屏幕则maximumScale等于1，原始图片宽高小雨屏幕则maximumScale大于1
+        // 如果图片太小，放大效果不明显，为其设置一个最大的放大比例
+        if (maximumScale / minimumScale < kFLAnimatedImageViewPreferredZoomScale) {
+            maximumScale = minimumScale * kFLAnimatedImageViewPreferredZoomScale;
+        }
+        
+        self.minimumZoomScale = minimumScale;
+        self.maximumZoomScale = maximumScale;
+
         self.zoomScale = self.minimumZoomScale;
-        
+
         // scrollView.panGestureRecognizer.enabled is on by default and enabled by
         // viewWillLayoutSubviews in the container controller so disable it here
         // to prevent an interference with the container controller's pan gesture.
@@ -174,6 +191,47 @@
         self.panGestureRecognizer.enabled = NO;
     }
 }
+
+- (BOOL)isVerticalLongImage {
+    return (self.imageView.image.size.height / self.imageView.image.size.width) >= 4.0;
+}
+
+/*
+ // 备忘，使用 setContentSize： 方法，maximumZooming状态在 setContentSize：前后是不变的
+ */
+- (void)setContentSize:(CGSize)contentSize {
+    BOOL maximumZooming = self.zoomScale >= self.maximumZoomScale;
+    if (self.isVerticalLongImage && !maximumZooming) {
+        self.contentInset = self.contentInsetStored; // restore
+    }
+    
+    [super setContentSize:contentSize];
+    
+    if (self.isVerticalLongImage && maximumZooming) {
+        // 图片四周有缩进，长图放大后，把缩进去除，以使垂直滚动时不显示水平方向上的缩进黑边
+        self.contentInset = UIEdgeInsetsZero;
+    }
+}
+
+/*
+ // 备忘，使用 zoomToRect： 方法，enlarging状态在 zoomToRect：前后是变化的
+- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated {
+    BOOL enlarging = self.zoomScale >= self.minimumZoomScale + 0.01;
+    if (self.isVerticalLongImage && enlarging) {
+        self.contentInset = self.contentInsetStored; // restore
+    }
+    
+    [super zoomToRect:rect animated:animated];
+    
+    enlarging = !enlarging;
+    
+    if (self.isVerticalLongImage && enlarging) {
+        // 图片四周有缩进，长图放大后，把缩进去除，以使垂直滚动时不显示水平方向上的缩进黑边
+        self.contentInsetStored = self.contentInset;
+        self.contentInset = UIEdgeInsetsZero;
+    }
+}
+*/
 
 #pragma mark - Centering
 
@@ -196,6 +254,7 @@
     
     // Use `contentInset` to center the contents in the scroll view. Reasoning explained here: http://petersteinberger.com/blog/2013/how-to-center-uiscrollview/
     self.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
+    self.contentInsetStored = self.contentInset;
 }
 
 @end
